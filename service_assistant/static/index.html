@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spoke &amp; Spanner · Service assistant</title>
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#request">Skip to request</a>
+  <header class="site-header">
+    <a class="brand" href="/">Spoke &amp; Spanner<span>Bicycle repair desk</span></a>
+    <span class="demo-label">Fictional shop · synthetic records</span>
+  </header>
+  <main>
+    <div class="page-heading">
+      <div><h1>A clear answer starts with the record.</h1><p>Check a repair, see the evidence, then review a customer response.</p></div>
+      <span class="boundary-label">Lookups only. Nothing is sent.</span>
+    </div>
+    <div class="workspace">
+      <section class="request-panel" aria-labelledby="request-title">
+        <h2 id="request-title">Customer question</h2>
+        <form id="request-form">
+          <label for="mode">Assistant mode</label>
+          <select id="mode" name="mode">
+            <option value="offline">Offline demo</option>
+            <option value="ollama">Local model · Ollama</option>
+          </select>
+          <p class="field-help" id="mode-help">Deterministic routing and a template draft. No model or external request.</p>
+          <label for="request">What would you like to check?</label>
+          <textarea id="request" name="question" rows="5" maxlength="1000" required aria-describedby="question-help character-count" placeholder="When will R-1042 be ready, and what will it cost?"></textarea>
+          <div class="input-meta"><span id="question-help">Use a ticket ID or a policy question.</span><span id="character-count">0 / 1,000</span></div>
+          <button class="primary" id="submit" type="submit" disabled>Check records &amp; draft</button>
+          <button class="quiet reset" id="reset" type="button">Clear workspace</button>
+        </form>
+        <div class="examples">
+          <h3>Try a synthetic scenario</h3>
+          <button type="button" class="example" data-question="When will R-1042 be ready, and what will it cost?"><span>Waiting for a part</span><small>R-1042 · arrival not confirmed</small></button>
+          <button type="button" class="example" data-question="Can I collect R-1043?"><span>Ready for collection</span><small>R-1043 · check collection policy</small></button>
+          <button type="button" class="example" data-question="What is the status of the blue bicycle?"><span>Two possible matches</span><small>See how clarification works</small></button>
+          <button type="button" class="example" data-question="What does the warranty cover?"><span>Policy question</span><small>Read the workmanship policy</small></button>
+        </div>
+        <p class="scope-note">Demo snapshot: 3 repairs, 2 parts, 4 policies. Records have no live connection and do not change.</p>
+      </section>
+
+      <section class="answer-panel" aria-labelledby="answer-title" aria-busy="false">
+        <div class="answer-heading"><h2 id="answer-title">Review workspace</h2><span id="result-mode" class="result-mode" hidden></span></div>
+        <p id="status" class="status" role="status">Connecting to the local app…</p>
+        <div id="error" class="error" role="alert" hidden></div>
+        <button id="retry-config" class="secondary" type="button" hidden>Reconnect to local app</button>
+        <div id="empty" class="empty">
+          <h3>The evidence comes first.</h3>
+          <p>Ask about a repair or choose a scenario. You’ll get the recorded facts, any missing information, and a draft to review.</p>
+          <ol class="workflow"><li>Look up records</li><li>Check sources</li><li>Review draft</li></ol>
+        </div>
+        <div id="loading" class="loading" hidden aria-hidden="true"><div></div><div></div><div></div></div>
+        <div id="result" hidden>
+          <p id="result-notice" class="notice"></p>
+          <section id="clarification" class="clarification" hidden aria-labelledby="clarification-title"><h3 id="clarification-title">Choose the intended repair</h3><div id="candidates"></div></section>
+          <section class="facts-section" aria-labelledby="facts-title"><h3 id="facts-title">Recorded facts</h3><ul id="facts" class="facts"></ul><p id="no-facts" hidden>No verified facts were found for this request.</p></section>
+          <section id="missing-section" class="missing-section" hidden aria-labelledby="missing-title"><h3 id="missing-title">Still unknown or unresolved</h3><ul id="missing"></ul></section>
+          <section class="draft-section" aria-labelledby="draft-title"><div class="section-title"><h3 id="draft-title">Customer response draft</h3><span>Human review required</span></div>
+            <p id="draft-warning" class="field-help"></p>
+            <label class="sr-only" for="draft-text">Customer response draft, read only</label>
+            <textarea id="draft-text" rows="8" readonly hidden></textarea>
+            <p id="no-draft">No draft is available. Resolve the issue above and try again.</p>
+            <div class="draft-actions"><button type="button" class="secondary" id="copy-draft" hidden>Copy draft</button><span id="copy-status" role="status"></span></div>
+          </section>
+          <details class="audit"><summary id="audit-title">Sources &amp; tool trace</summary><div id="sources"></div><ol id="trace" class="trace"></ol></details>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer>Local portfolio demonstration. All shop details and records are invented.</footer>
+</body>
+</html>
